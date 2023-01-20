@@ -1,0 +1,64 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<div class="container">
+    <div class="row">
+        <form class="col s12" action="{% url 'Freeforall:guardarUsuario' %}" method="POST">{% csrf_token %}
+            <div class="row">
+                <label for="titulo">Primer nombre</label>
+                <div class="input-field col s12">
+                    <input id="titulo" type="text" class="form-control" name="primer_nombre" required>
+                    
+                </div>
+                <label for="titulo">Segundo nombre</label>
+                <div class="input-field col s12">
+                    <input id="titulo" type="text" class="form-control" name="segundo_nombre" required>
+                   
+                </div>
+                <label for="titulo">Primer apellido</label>
+                <div class="input-field col s12">
+                    <input id="titulo" type="text" class="form-control" name="primer_apellido" required>
+                    
+                </div>
+                <label for="titulo">Segundo apellido</label>
+                <div class="input-field col s12">
+                    <input id="titulo" type="text" class="form-control" name="segundo_apellido" required>
+                    
+                </div>
+                <label for="titulo">Email</label>
+                <div class="input-field col s12">
+                    <input id="titulo" type="text" class="form-control" name="email" required>
+                    
+                </div>
+                <label for="fecha">Fecha de nacimiento</label>
+                <div class="input-field col s12">
+                    <input id="fecha" type="date" class="form-control" name="fecha_de_nacimiento" required>
+                    
+                </div>
+                <label>Contraseña</label>
+                <div class="input-field col s12">
+                    <input type="password" class="form-control"  name="clave" required><br>
+
+                </div>
+                <div class="input-field">
+                    <label>Rol</label>
+                    <select name="rol" class="form-control" required>
+                        <option>Seleccione</option>
+                        {% if request.session.logueo.2 == 'A' %}
+                        <option value="A">Administrador</option>
+                        {% endif %}
+                        <option value="E">Espectador</option>
+                        <option value="C">carousel-indicators</option>
+                    </select>
+                </div>
+                    <button type="submit" class="btn btn-primary">Guardar usuario</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

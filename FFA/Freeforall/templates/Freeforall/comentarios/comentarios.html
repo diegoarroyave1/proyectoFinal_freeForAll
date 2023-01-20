@@ -1,0 +1,47 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Comentarios</h2>
+          </div>
+       </div>
+    </div>
+    <h1>Comentarios</h1>
+    <a href="{% url 'Freeforall:nuevoComentarios' %}" class="btn btn-primary">Crear</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Comentarios</th>
+                    <th>Fecha ingreso</th>
+                    <th>Evento</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for comentario in comentarios %}
+                <tr>
+                    <td>{{comentario.id_comentarios}}</td>
+                    <td>{{comentario.comentarios}}</td>
+                    <td>{{comentario.fecha_ingreso}}</td>
+                    <td>{{comentario.id_evento}}</td>
+                    <td>
+                    <a href="{% url 'Freeforall:editarComentarios' comentario.id_comentarios %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'Freeforall:eliminarComentarios' comentario.id_comentarios %}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>        
+{% endif %}   
+{% endblock %}

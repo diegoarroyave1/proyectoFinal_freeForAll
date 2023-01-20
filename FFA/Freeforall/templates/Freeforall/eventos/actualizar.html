@@ -1,0 +1,75 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Actualizar evento</h2>
+             <span> llena cada campo con los datos indicados</span>
+          </div>
+       </div>
+    </div>
+<div class="container">
+    <div class="row">
+        <form class="col s12" action="{% url 'Freeforall:actualizarEvento' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <div class="row">
+                <input value="{{evento.id_evento}}" type="hidden" name="id_evento">
+                <label for="titulo">Nombre</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.nombre_evento}}" id="titulo" type="text" name="nombre_evento" class="form-control" required>
+                    
+                </div>
+                <label for="fecha">Fecha inicio</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.fecha_inicio|date:'Y-m-d'}}" id="fecha" type="date" name="fecha_inicio" class="form-control" required>
+                    
+                </div>
+                <label for="fecha">Feha fin</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.feha_fin|date:'Y-m-d'}}" id="fecha" type="date" name="feha_fin" class="form-control" required>
+                    
+                </div>
+                <label for="titulo">Ubicacion</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.ubicacion}}" id="titulo" type="text" name="ubicacion" class="form-control" required>
+                    
+                </div>
+                <label for="titulo">Precio</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.precio}}" id="titulo" type="number" name="precio" class="form-control" required>
+                    
+                </div>
+                <label for="titulo">Municipio</label>
+                <div class="input-field col s12">
+                    <input value="{{evento.Municipio}}" id="titulo" type="text" name="Municipio" class="form-control" required>
+                    
+                </div>
+                <div class="input-field col s12">
+                    <select class="form-select" name="ligas" required>
+                        {% for liga in ligas %}
+                        <option  value="{{liga.id_liga}}" {% if evento.liga.id_liga == liga.id_liga %} selected {% endif %}>{{liga.nombre_liga}}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="input-field col s12">
+                        <input value="{{ request.session.logueo.3 }}" id="titulo" type="hidden" class="form-control" name="usuarios" required>
+                    </div>
+                </div>
+                <label>Foto</label>
+                    <strong><span> - actual:{{evento.foto.url}}</span></strong>
+                     <input type="file" value="{{ eventos.foto }}"name="foto" class="form-control" accept="image/*" ><br>
+                <div class="form-btns">
+                    <button type="submit" class="btn btn-primary">Guardar evento</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freeforall.views &#8212; documentación de Freeforall - 1</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/groundwork.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/translations.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">documentación de Freeforall - 1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Código de módulo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Freeforall.views</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Código fuente para Freeforall.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render</span><span class="p">,</span> <span class="n">redirect</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="c1"># Create your views here.</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span>
+<span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">FileSystemStorage</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">remove</span><span class="p">,</span> <span class="n">path</span>
+
+<span class="sd">&quot;&quot;&quot;Login&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="loginFormulario"><a class="viewcode-back" href="../../index.html#Freeforall.views.loginFormulario">[documentos]</a><span class="k">def</span> <span class="nf">loginFormulario</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario del login</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/login/login.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/login/login.html&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="login"><a class="viewcode-back" href="../../index.html#Freeforall.views.login">[documentos]</a><span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para validar el email y la clave y dar los permisos dependiendo el rol (A),(E)</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    login: Optiene los datos para la sesion</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarEventos`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mail</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+            <span class="n">passw</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;clave&quot;</span><span class="p">]</span>
+
+            <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">email</span> <span class="o">=</span> <span class="n">mail</span><span class="p">,</span> <span class="n">clave</span> <span class="o">=</span> <span class="n">passw</span><span class="p">)</span>
+            <span class="c1"># crear la sesión</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;logueo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">usuarios</span><span class="o">.</span><span class="n">primer_nombre</span><span class="p">,</span> <span class="n">usuarios</span><span class="o">.</span><span class="n">primer_apellido</span><span class="p">,</span><span class="n">usuarios</span><span class="o">.</span><span class="n">rol</span><span class="p">,</span> <span class="n">usuarios</span><span class="o">.</span><span class="n">get_id_usuario</span><span class="p">,</span> <span class="n">usuarios</span><span class="o">.</span><span class="n">get_rol_display</span><span class="p">()]</span>
+            <span class="c1"># ----------------------------</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Bienvenido!!&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarEventos&#39;</span><span class="p">)</span>     
+
+        <span class="k">except</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Usuario o contraseña incorrectos...&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:loginFormulario&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:loginFormulario&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Usted no ha enviado datos...&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:loginFormulario&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../../index.html#Freeforall.views.logout">[documentos]</a><span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para validar el email y la clave y dar los permisos dependiendo el rol (A),(E)</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            template:`Freeforall:loginFormulario`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s2">&quot;logueo&quot;</span><span class="p">]</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Sesión cerrada correctamente!!&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:loginFormulario&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:loginFormulario&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="formularioRegister"><a class="viewcode-back" href="../../index.html#Freeforall.views.formularioRegister">[documentos]</a><span class="k">def</span> <span class="nf">formularioRegister</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario del Register</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/login/register.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/login/register.html&#39;</span><span class="p">)</span>        </div>
+ 
+<span class="sd">&quot;&quot;&quot;Usuarios&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="listarUsuarios"><a class="viewcode-back" href="../../index.html#Freeforall.views.listarUsuarios">[documentos]</a><span class="k">def</span> <span class="nf">listarUsuarios</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para listar los usuarios existentes</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/usuarios/usuarios.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/usuarios/usuarios.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;usuarios&quot;</span><span class="p">:</span>  <span class="n">usuarios</span><span class="p">})</span>   </div>
+
+<div class="viewcode-block" id="formularioUsuario"><a class="viewcode-back" href="../../index.html#Freeforall.views.formularioUsuario">[documentos]</a><span class="k">def</span> <span class="nf">formularioUsuario</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario del Usuario</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/usuarios/nuevo.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/usuarios/nuevo.html&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="guardarUsuario"><a class="viewcode-back" href="../../index.html#Freeforall.views.guardarUsuario">[documentos]</a><span class="k">def</span> <span class="nf">guardarUsuario</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para guardar un usuario</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para registrar los usuarios,(&#39;id_usuario&#39;, &#39;estado&#39;, &#39;primer_nombre&#39;, &#39;segundo_nombre&#39;, &#39;primer_apellido&#39;, &#39;segundo_apellido&#39;, &#39;email&#39;, &#39;fecha_de_nacimiento&#39;, &#39;clave&#39;, &#39;ROLES&#39;, &#39;rol&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarEventos`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">usuario</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="p">(</span> 
+            <span class="n">primer_nombre</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;primer_nombre&quot;</span><span class="p">],</span>
+            <span class="n">segundo_nombre</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;segundo_nombre&quot;</span><span class="p">],</span>
+            <span class="n">primer_apellido</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;primer_apellido&quot;</span><span class="p">],</span>
+            <span class="n">segundo_apellido</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;segundo_apellido&quot;</span><span class="p">],</span>
+            <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">],</span>
+            <span class="n">fecha_de_nacimiento</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;fecha_de_nacimiento&quot;</span><span class="p">],</span>
+            <span class="n">clave</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;clave&quot;</span><span class="p">],</span>
+            <span class="n">rol</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;rol&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">usuario</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Producto guardado correctamente!!&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarEventos&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="editarUsuario"><a class="viewcode-back" href="../../index.html#Freeforall.views.editarUsuario">[documentos]</a><span class="k">def</span> <span class="nf">editarUsuario</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario editar Usuario</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/usuarios/actualizar.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_usuario</span> <span class="o">=</span> <span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/usuarios/actualizar.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;usuarios&quot;</span><span class="p">:</span> <span class="n">usuarios</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="actualizarUsuario"><a class="viewcode-back" href="../../index.html#Freeforall.views.actualizarUsuario">[documentos]</a><span class="k">def</span> <span class="nf">actualizarUsuario</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para actualizar un usuario</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para actualizar los usuarios,(&#39;id_usuario&#39;, &#39;estado&#39;, &#39;primer_nombre&#39;, &#39;segundo_nombre&#39;, &#39;primer_apellido&#39;, &#39;segundo_apellido&#39;, &#39;email&#39;, &#39;fecha_de_nacimiento&#39;, &#39;clave&#39;, &#39;ROLES&#39;, &#39;rol&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/usuarios/actualizar.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_usuario</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;id_usuario&quot;</span><span class="p">])</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">primer_nombre</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;primer_nombre&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">segundo_nombre</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;segundo_nombre&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">primer_apellido</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;primer_apellido&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">segundo_apellido</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;segundo_apellido&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">fecha_de_nacimiento</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;fecha_de_nacimiento&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">clave</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;clave&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">rol</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;rol&quot;</span><span class="p">]</span>
+        <span class="n">usuarios</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarUsuarios&#39;</span><span class="p">)</span></div>
+
+<span class="sd">&quot;&quot;&quot;Ligas&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="listarLigas"><a class="viewcode-back" href="../../index.html#Freeforall.views.listarLigas">[documentos]</a><span class="k">def</span> <span class="nf">listarLigas</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para listar las ligas existentes</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/ligas/ligas.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ligas</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/ligas/ligas.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;ligas&quot;</span><span class="p">:</span>  <span class="n">ligas</span><span class="p">})</span>   </div>
+
+<div class="viewcode-block" id="formularioLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.formularioLiga">[documentos]</a><span class="k">def</span> <span class="nf">formularioLiga</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario de liga</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/ligas/nuevo.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/ligas/nuevo.html&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="guardarLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.guardarLiga">[documentos]</a><span class="k">def</span> <span class="nf">guardarLiga</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para guardar una liga</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para registrar las ligas,(&#39;id_liga&#39;, &#39;nombre_liga&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarLigas`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">liga</span> <span class="o">=</span> <span class="n">Liga</span><span class="p">(</span> 
+                <span class="n">nombre_liga</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;nombre_liga&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+            <span class="n">liga</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Producto guardado correctamente!!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Usted no ha enviado datos...&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarLigas&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="formularioEditarLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.formularioEditarLiga">[documentos]</a><span class="k">def</span> <span class="nf">formularioEditarLiga</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario del Usuario</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/ligas/actualizar.html&#39;`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/ligas/actualizar.html&#39;</span><span class="p">)</span>    </div>
+
+<div class="viewcode-block" id="eliminarLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.eliminarLiga">[documentos]</a><span class="k">def</span> <span class="nf">eliminarLiga</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para eliminar una liga</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene el id  eliminar una liga</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarLigas`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">liga</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_liga</span> <span class="o">=</span> <span class="nb">id</span><span class="p">)</span>
+        <span class="n">liga</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">pass</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarLigas&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="editarLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.editarLiga">[documentos]</a><span class="k">def</span> <span class="nf">editarLiga</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario editar Liga</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/ligas/actualizar.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">liga</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_liga</span> <span class="o">=</span> <span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/ligas/actualizar.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;liga&quot;</span><span class="p">:</span> <span class="n">liga</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="actualizarLiga"><a class="viewcode-back" href="../../index.html#Freeforall.views.actualizarLiga">[documentos]</a><span class="k">def</span> <span class="nf">actualizarLiga</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Se usa para actualizar un usuario</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para actualizar los usuarios,(&#39;id_liga&#39;, &#39;nombre_liga&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/usuarios/actualizar.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">liga</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_liga</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;id_liga&quot;</span><span class="p">])</span>
+        <span class="n">liga</span><span class="o">.</span><span class="n">nombre_liga</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;nombre_liga&quot;</span><span class="p">],</span>
+        <span class="n">liga</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarLigas&#39;</span><span class="p">)</span> </div>
+
+<span class="c1">#Eventos   </span>
+
+
+<div class="viewcode-block" id="listarEventos"><a class="viewcode-back" href="../../index.html#Freeforall.views.listarEventos">[documentos]</a><span class="k">def</span> <span class="nf">listarEventos</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para listar los eventos existentes</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/eventos/eventos.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">eventos</span> <span class="o">=</span> <span class="n">Evento</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">eventos</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># Mostrar 3 registros por página...</span>
+
+    <span class="n">page_number</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">)</span>
+    <span class="c1">#Sobreescribir la salida de la consulta.......</span>
+    <span class="n">eventos</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_page</span><span class="p">(</span><span class="n">page_number</span><span class="p">)</span>
+    
+    <span class="n">contexto</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;datos&quot;</span><span class="p">:</span> <span class="n">eventos</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/eventos/eventos.html&#39;</span><span class="p">,</span><span class="n">contexto</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="formularioEvento"><a class="viewcode-back" href="../../index.html#Freeforall.views.formularioEvento">[documentos]</a><span class="k">def</span> <span class="nf">formularioEvento</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario de evento</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/evento/nuevo.html`</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ligas</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">invitaciones</span> <span class="o">=</span> <span class="n">Invitaciones</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/eventos/nuevo.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;ligas&quot;</span><span class="p">:</span>  <span class="n">ligas</span><span class="p">,</span> <span class="s2">&quot;usuarios&quot;</span><span class="p">:</span>  <span class="n">usuarios</span><span class="p">,</span> <span class="s2">&quot;invitaciones&quot;</span><span class="p">:</span>  <span class="n">invitaciones</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="guardarEvento"><a class="viewcode-back" href="../../index.html#Freeforall.views.guardarEvento">[documentos]</a><span class="k">def</span> <span class="nf">guardarEvento</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para guardar un evento</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para registrar los eventos,(&#39;id_liga&#39;, &#39;nombre_liga&#39;, )</span>
+<span class="sd">    (&#39;id_evento&#39;, &#39;nombre_evento&#39;, &#39;fecha_inicio&#39;, &#39;feha_fin&#39;, &#39;ubicacion&#39;, &#39;precio&#39;, &#39;Municipio&#39;, &#39;id_usuario&#39;, &#39;id_liga&#39;, &#39;id_invitaciones&#39;, &#39;foto&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarEventos`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">:</span>
+                <span class="n">fss</span> <span class="o">=</span> <span class="n">FileSystemStorage</span><span class="p">()</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s2">&quot;foto&quot;</span><span class="p">]</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="n">fss</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;Freeforall/fotos/&quot;</span> <span class="o">+</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;Freeforall/fotos/default.jpg&#39;</span>
+
+            <span class="n">ligas</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;ligas&quot;</span><span class="p">])</span>
+            <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;usuarios&quot;</span><span class="p">])</span>
+            <span class="n">invitacion</span> <span class="o">=</span> <span class="n">Invitaciones</span><span class="o">.</span><span class="n">ousuariosbjects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_invitaciones</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;invitacion&quot;</span><span class="p">])</span>
+            <span class="n">eventos</span> <span class="o">=</span> <span class="n">Evento</span><span class="p">(</span>
+                <span class="n">nombre_evento</span> <span class="o">=</span>  <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;nombre_evento&quot;</span><span class="p">],</span>
+                <span class="n">fecha_inicio</span> <span class="o">=</span>   <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;fecha_inicio&quot;</span><span class="p">],</span>
+                <span class="n">feha_fin</span> <span class="o">=</span>   <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;feha_fin&quot;</span><span class="p">],</span>
+                <span class="n">ubicacion</span> <span class="o">=</span>  <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;ubicacion&quot;</span><span class="p">],</span>
+                <span class="n">precio</span> <span class="o">=</span>  <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;precio&quot;</span><span class="p">],</span>
+                <span class="n">Municipio</span> <span class="o">=</span>  <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;Municipio&quot;</span><span class="p">],</span>
+                <span class="n">id_usuario</span> <span class="o">=</span> <span class="n">usuarios</span><span class="p">,</span>
+                <span class="n">id_liga</span> <span class="o">=</span> <span class="n">ligas</span><span class="p">,</span>
+                <span class="n">id_invitaciones</span> <span class="o">=</span> <span class="n">invitacion</span><span class="p">,</span>
+                <span class="n">foto</span> <span class="o">=</span> <span class="n">file</span>
+            <span class="p">)</span>
+            <span class="n">eventos</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot; Usuario guardado correctamente!!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;Usted no ha enviado datos...&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarEventos&#39;</span><span class="p">)</span> </div>
+
+<div class="viewcode-block" id="eliminarEvento"><a class="viewcode-back" href="../../index.html#Freeforall.views.eliminarEvento">[documentos]</a><span class="k">def</span> <span class="nf">eliminarEvento</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para eliminar una evento</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene el id  eliminar un evento</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarEventos`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">evento</span> <span class="o">=</span> <span class="n">Evento</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_evento</span> <span class="o">=</span> <span class="nb">id</span><span class="p">)</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">pass</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarEventos&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="editarEvento"><a class="viewcode-back" href="../../index.html#Freeforall.views.editarEvento">[documentos]</a><span class="k">def</span> <span class="nf">editarEvento</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Redirecciona al formulario editar evento</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall/eventos/actualizar.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">evento</span> <span class="o">=</span> <span class="n">Evento</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_evento</span> <span class="o">=</span> <span class="nb">id</span><span class="p">)</span>
+    <span class="n">ligas</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">invitacion</span> <span class="o">=</span> <span class="n">Invitaciones</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Freeforall/eventos/actualizar.html&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;evento&quot;</span><span class="p">:</span> <span class="n">evento</span><span class="p">,</span> <span class="s2">&quot;ligas&quot;</span><span class="p">:</span> <span class="n">ligas</span><span class="p">,</span> <span class="s2">&quot;usuarios&quot;</span><span class="p">:</span> <span class="n">usuarios</span><span class="p">,</span> <span class="s2">&quot;invitacion&quot;</span><span class="p">:</span> <span class="n">invitacion</span><span class="p">})</span></div>
+
+<div class="viewcode-block" id="actualizarEvento"><a class="viewcode-back" href="../../index.html#Freeforall.views.actualizarEvento">[documentos]</a><span class="k">def</span> <span class="nf">actualizarEvento</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Se usa para actualizar un evento</span>
+
+<span class="sd">    Arg:</span>
+<span class="sd">    Usuario: Optiene los datos para actualizar un evento,(&#39;id_liga&#39;, &#39;nombre_liga&#39;, )</span>
+<span class="sd">    (&#39;id_evento&#39;, &#39;nombre_evento&#39;, &#39;fecha_inicio&#39;, &#39;feha_fin&#39;, &#39;ubicacion&#39;, &#39;precio&#39;, &#39;Municipio&#39;, &#39;id_usuario&#39;, &#39;id_liga&#39;, &#39;id_invitaciones&#39;, &#39;foto&#39;, )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        template:`Freeforall:listarEventos`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ligas</span> <span class="o">=</span> <span class="n">Liga</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;ligas&quot;</span><span class="p">])</span>
+        <span class="n">usuarios</span> <span class="o">=</span> <span class="n">Usuarios</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;usuarios&quot;</span><span class="p">])</span>
+        <span class="n">invitacion</span> <span class="o">=</span> <span class="n">Invitaciones</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;invitacion&quot;</span><span class="p">])</span>
+        <span class="n">evento</span> <span class="o">=</span> <span class="n">Evento</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">id_evento</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;id_evento&quot;</span><span class="p">])</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">nombre_evento</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;nombre_evento&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">fecha_inicio</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;fecha_inicio&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">feha_fin</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;feha_fin&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">ubicacion</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;ubicacion&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">precio</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;precio&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">Municipio</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;Municipio&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">id_usuario</span> <span class="o">=</span> <span class="n">usuarios</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">id_liga</span> <span class="o">=</span> <span class="n">ligas</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">id_invitaciones</span> <span class="o">=</span> <span class="n">invitacion</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">foto</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+        <span class="n">evento</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Freeforall:listarEventos&#39;</span><span class="p">)</span>                      </div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Tabla de contenido</a></h3>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">documentación de Freeforall - 1</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Código de módulo</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Freeforall.views</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2022, Diego Arroyave.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

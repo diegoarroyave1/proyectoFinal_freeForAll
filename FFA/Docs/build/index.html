@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Bienvenido a la documentacion del proyecto formativo Freeforall &#8212; documentación de Freeforall - 1</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/groundwork.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/translations.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             accesskey="I">índice</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">documentación de Freeforall - 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bienvenido a la documentacion del proyecto formativo Freeforall</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="bienvenido-a-la-documentacion-del-proyecto-formativo-freeforall">
+<h1>Bienvenido a la documentacion del proyecto formativo Freeforall<a class="headerlink" href="#bienvenido-a-la-documentacion-del-proyecto-formativo-freeforall" title="Enlace permanente a este encabezado">¶</a></h1>
+<p><strong>Este es el proyecto formativo para mi graducaion de tecnologo</strong></p>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-Freeforall.views"></span><dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.actualizarEvento">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">actualizarEvento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#actualizarEvento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.actualizarEvento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para actualizar un evento</p>
+<p>Arg:
+Usuario: Optiene los datos para actualizar un evento,(“id_liga”, “nombre_liga”, )
+(“id_evento”, “nombre_evento”, “fecha_inicio”, “feha_fin”, “ubicacion”, “precio”, “Municipio”, “id_usuario”, “id_liga”, “id_invitaciones”, “foto”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarEventos</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.actualizarLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">actualizarLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#actualizarLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.actualizarLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para actualizar un usuario</p>
+<p>Arg:
+Usuario: Optiene los datos para actualizar los usuarios,(“id_liga”, “nombre_liga”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/usuarios/actualizar.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.actualizarUsuario">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">actualizarUsuario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#actualizarUsuario"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.actualizarUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para actualizar un usuario</p>
+<p>Arg:
+Usuario: Optiene los datos para actualizar los usuarios,(“id_usuario”, “estado”, “primer_nombre”, “segundo_nombre”, “primer_apellido”, “segundo_apellido”, “email”, “fecha_de_nacimiento”, “clave”, “ROLES”, “rol”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/usuarios/actualizar.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.editarEvento">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">editarEvento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#editarEvento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.editarEvento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario editar evento</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/eventos/actualizar.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.editarLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">editarLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#editarLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.editarLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario editar Liga</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/ligas/actualizar.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.editarUsuario">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">editarUsuario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#editarUsuario"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.editarUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario editar Usuario</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/usuarios/actualizar.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.eliminarEvento">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">eliminarEvento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#eliminarEvento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.eliminarEvento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para eliminar una evento</p>
+<p>Arg:
+Usuario: Optiene el id  eliminar un evento</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarEventos</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.eliminarLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">eliminarLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#eliminarLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.eliminarLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para eliminar una liga</p>
+<p>Arg:
+Usuario: Optiene el id  eliminar una liga</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarLigas</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.formularioEditarLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">formularioEditarLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#formularioEditarLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.formularioEditarLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario del Usuario</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/ligas/actualizar.html”</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.formularioEvento">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">formularioEvento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#formularioEvento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.formularioEvento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario de evento</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/evento/nuevo.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.formularioLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">formularioLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#formularioLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.formularioLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario de liga</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/ligas/nuevo.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.formularioRegister">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">formularioRegister</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#formularioRegister"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.formularioRegister" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario del Register</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/login/register.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.formularioUsuario">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">formularioUsuario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#formularioUsuario"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.formularioUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario del Usuario</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/usuarios/nuevo.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.guardarEvento">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">guardarEvento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#guardarEvento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.guardarEvento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para guardar un evento</p>
+<p>Arg:
+Usuario: Optiene los datos para registrar los eventos,(“id_liga”, “nombre_liga”, )
+(“id_evento”, “nombre_evento”, “fecha_inicio”, “feha_fin”, “ubicacion”, “precio”, “Municipio”, “id_usuario”, “id_liga”, “id_invitaciones”, “foto”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarEventos</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.guardarLiga">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">guardarLiga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#guardarLiga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.guardarLiga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para guardar una liga</p>
+<p>Arg:
+Usuario: Optiene los datos para registrar las ligas,(“id_liga”, “nombre_liga”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarLigas</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.guardarUsuario">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">guardarUsuario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#guardarUsuario"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.guardarUsuario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para guardar un usuario</p>
+<p>Arg:
+Usuario: Optiene los datos para registrar los usuarios,(“id_usuario”, “estado”, “primer_nombre”, “segundo_nombre”, “primer_apellido”, “segundo_apellido”, “email”, “fecha_de_nacimiento”, “clave”, “ROLES”, “rol”, )</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarEventos</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.listarEventos">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">listarEventos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#listarEventos"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.listarEventos" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para listar los eventos existentes</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/eventos/eventos.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.listarLigas">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">listarLigas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#listarLigas"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.listarLigas" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para listar las ligas existentes</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/ligas/ligas.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.listarUsuarios">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">listarUsuarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#listarUsuarios"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.listarUsuarios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para listar los usuarios existentes</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/usuarios/usuarios.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.login">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.login" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para validar el email y la clave y dar los permisos dependiendo el rol (A),(E)</p>
+<p>Arg:
+login: Optiene los datos para la sesion</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:listarEventos</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.loginFormulario">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">loginFormulario</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#loginFormulario"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.loginFormulario" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Redirecciona al formulario del login</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall/login/login.html</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Freeforall.views.logout">
+<span class="sig-prename descclassname"><span class="pre">Freeforall.views.</span></span><span class="sig-name descname"><span class="pre">logout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/views.html#logout"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.views.logout" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Se usa para validar el email y la clave y dar los permisos dependiendo el rol (A),(E)</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>template:<cite>Freeforall:loginFormulario</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-Freeforall.models"></span><dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Comentarios">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Comentarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Comentarios"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Comentarios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Esta modelo recibe los datos de los comentarios</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Comentarios.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Comentarios.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Comentarios.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Comentarios.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Evento">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Evento</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Evento"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Evento" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Esta modelo recibe los datos de los Eventos</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Evento.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Evento.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Evento.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Evento.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Invitaciones">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Invitaciones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Invitaciones"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Invitaciones" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Esta modelo recibe los datos de las invitaciones</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Invitaciones.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Invitaciones.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Invitaciones.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Invitaciones.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Liga">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Liga</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Liga"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Liga" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Esta modelo recibe los datos de las ligas</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Liga.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Liga.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Liga.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Liga.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Login">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_usuario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Login"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Login" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Login.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Login.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Login.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Login.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Freeforall.models.Usuarios">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Freeforall.models.</span></span><span class="sig-name descname"><span class="pre">Usuarios</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Freeforall/models.html#Usuarios"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Freeforall.models.Usuarios" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd><p>Esta modelo recibe los datos de los usuarios</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Usuarios.DoesNotExist">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#Freeforall.models.Usuarios.DoesNotExist" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Freeforall.models.Usuarios.MultipleObjectsReturned">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#Freeforall.models.Usuarios.MultipleObjectsReturned" title="Enlazar permanentemente con esta definición">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Enlace permanente a este encabezado">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Índice</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Índice de Módulos</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Página de Búsqueda</span></a></p></li>
+</ul>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Tabla de contenido</a></h3>
+
+  <div role="note" aria-label="source link">
+    <h3>Esta página</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Mostrar el código</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Búsqueda rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Ir a" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navegación</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Índice General"
+             >índice</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Índice de Módulos Python"
+             >módulos</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">documentación de Freeforall - 1</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Bienvenido a la documentacion del proyecto formativo Freeforall</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Derechos de autor 2022, Diego Arroyave.
+      Creado usando <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

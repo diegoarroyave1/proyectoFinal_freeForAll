@@ -1,0 +1,42 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Ligas</h2>
+          </div>
+       </div>
+    </div>
+    <h1>Usuarios</h1>
+    <a href="{% url 'Freeforall:nuevoliga' %}" class="btn btn-primary">Crear</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titulo</th>
+                    <th></th>
+                    <th></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for liga in ligas %}
+                <tr>
+                    <td>{{liga.id_liga}}</td>
+                    <td>{{liga.nombre_liga}}</td>
+                    <td><a href="{% url 'Freeforall:editarLiga' liga.id_liga %}" class="btn btn-warning">Editar</a><a href="{% url 'Freeforall:eliminarLiga' liga.id_liga %}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>        
+{% endif %}   
+{% endblock %}

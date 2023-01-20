@@ -1,0 +1,85 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Registro</h2>
+             <span> llena cada campo con los datos indicados</span>
+          </div>
+       </div>
+    </div>
+    <body class="text-center">
+        <main class="form-signin w-100 m-auto">
+            <div class="col-md-7 col-lg-8 row justify-content-center">
+                <div class="col-md-12 ">
+                    <form class="col s12" action="{% url 'Freeforall:guardarUsuario' %}" method="POST">{% csrf_token %}
+                        <div class="row">
+                            <label for="titulo">primer_nombre</label>
+                            <div class="input-field col s12">
+                                <input id="titulo" type="text" class="form-control" name="primer_nombre">
+                                
+                            </div>
+                            <label for="titulo">segundo_nombre</label>
+                            <div class="input-field col s12">
+                                <input id="titulo" type="text" class="form-control" name="segundo_nombre">
+                            
+                            </div>
+                            <label for="titulo">primer_apellido</label>
+                            <div class="input-field col s12">
+                                <input id="titulo" type="text" class="form-control" name="primer_apellido">
+                                
+                            </div>
+                            <label for="titulo">segundo_apellido</label>
+                            <div class="input-field col s12">
+                                <input id="titulo" type="text" class="form-control" name="segundo_apellido">
+                                
+                            </div>
+                            <label for="titulo">email</label>
+                            <div class="input-field col s12">
+                                <input id="titulo" type="text" class="form-control" name="email">
+                                
+                            </div>
+                            <label for="fecha">Fecha de nacimiento</label>
+                            <div class="input-field col s12">
+                                <input id="fecha" type="date" class="form-control" name="fecha_de_nacimiento">
+                                
+                            </div>
+                            <label>contraseña</label>
+                            <div class="input-field col s12">
+                                <input type="password" class="form-control"  name="clave"><br>
+
+                            </div>
+                            <div class="input-field">
+                                <label>Rol</label>
+                                <select name="rol" class="form-control">
+                                    <option>Seleccione</option>
+                                    {% if request.session.logueo.2 == 'A' %}
+                                    <option value="A">Administrador</option>
+                                    {% endif %}
+                                    <option value="E">Espectador</option>
+                                    <option value="C">Espectador</option>
+                                </select>
+                            </div>
+                                <button type="submit" class="btn btn-primary">Guardar usuario</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </body>
+</div>
+ {% endblock %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{%extends "Freeforall/base.html"%}
+    {%load static%} 
+
+    {%block contenedor%}
+
+    <
+    <br><br>
+    <div class="container">
+        <div class="row">
+           <div class="col-md-12 ">
+              <div class="titlepage">
+                 <h2>Invitacion</h2>
+              </div>
+           </div>
+        </div>    
+<div class="container" style="text-align: center;">
+    <form method="post" action="{% url 'Freeforall:invitacion' %}">
+        {% csrf_token %}
+        <h2 style="color:black" >Invitacion para <br>{{usuarios.primer_nombre}}</h2>
+        <br>
+        <div class="container">
+            <input value="{{usuarios.id_usuario}}" type="hidden" name="id_usuario">
+            <label for="correo" id="exampleModalLabel">Correo</label>
+            <input class="form-control "   value="{{usuarios.email}}" id="email" name="email" ><br>
+            <input class="btn btn-info" type="submit" value="invitacion" id="invitacion">
+        </div>    
+    </form>
+</div>
+  
+
+{%endblock contenedor%}

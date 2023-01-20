@@ -1,0 +1,65 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Usuarios</h2>
+          </div>
+       </div>
+    </div>
+  {% if request.session.logueo.2 == 'A'%}
+  <a href="{% url 'Freeforall:nuevoUsuario' %}" class="btn btn-primary">Crear</a>
+  {% endif %}
+      <table class="table">
+          <thead>
+            <h1>Usuarios</h1>
+            <tr>
+                {% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'C'%}
+                <th>ID</th>
+                <th>primer_nombre</th>
+                {% endif %}
+                {% if request.session.logueo.2 == 'A'%}
+                <th>segundo_nombre</th>
+                <th>primer_apellido</th>
+                <th>segundo_apellido</th>
+                <th>email</th>
+                <th>fecha de fecha_de_nacimiento</th>
+                <th>Rol</th>
+                {% endif %}
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for usuarios in usuarios %}
+            <tr>
+              {% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'C'%}
+              <td>{{usuarios.id_usuario}}</td>
+              <td>{{usuarios.primer_nombre}}</td>
+              {% endif %}
+              {% if request.session.logueo.2 == 'A' %}
+              <td>{{usuarios.segundo_nombre}}</td>
+              <td>{{usuarios.primer_apellido}}</td>
+              <td>{{usuarios.segundo_apellido}}</td>
+              <td>{{usuarios.email}}</td>
+              <td>{{usuarios.fecha_de_nacimiento}}</td>
+              <td>{{usuarios.rol}}</td>
+              <td><a href="{% url 'Freeforall:editarUsuario' usuarios.id_usuario %}" class="btn btn-danger">Editar</a></td>
+              {% endif %}
+              {% if request.session.logueo.2 == 'C'%}
+              <td><a href="{% url 'Freeforall:nuevoInvitacion' usuarios.id_usuario %}" class="btn btn-warning">invitacion</a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+</div>        
+{% endif %}
+{% endblock %}

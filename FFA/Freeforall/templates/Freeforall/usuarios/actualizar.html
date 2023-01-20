@@ -1,0 +1,77 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+<br>
+<br><br>
+<br>
+<br><br>
+<div class="container">
+    <div class="row">
+       <div class="col-md-12 ">
+          <div class="titlepage">
+             <h2>Actualizar Usuarios</h2>
+             <span> llena cada campo con los datos indicados</span>
+          </div>
+       </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form class="col s12" action="{% url 'Freeforall:actualizarUsuario' %}" method="POST">{% csrf_token %}
+                <div class="row">
+                    <input value="{{usuarios.id_usuario}}" type="hidden" name="id_usuario">
+                    <label for="titulo">Primernombre</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.primer_nombre}}" class="form-control"id="titulo" type="text" name="primer_nombre">
+                        
+                    </div>
+                    <label for="titulo">Segundonombre</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.segundo_nombre}}" class="form-control" id="titulo" type="text" name="segundo_nombre">
+                        
+                    </div>
+                    <label for="titulo">Primer apellido</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.primer_apellido}}" class="form-control" id="titulo" type="text" name="primer_apellido">
+                        
+                    </div>
+                    <label for="titulo">Segundo apellido</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.segundo_apellido}}" class="form-control" id="titulo" type="text" name="segundo_apellido">
+                        
+                    </div>
+                    <label for="titulo">Email</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.email}}" class="form-control" id="titulo" type="text" name="email">
+                        
+                    </div>
+                    <label for="fecha">Fecha de nacimiento</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.fecha_de_nacimiento|date:'Y-m-d'}}" class="form-control" class="form-control" id="fecha" type="date" name="fecha_de_nacimiento">
+                        
+                    </div>
+                    <label>Contraseña</label>
+                    <div class="input-field col s12">
+                        <input value="{{usuarios.clave}}" type="password" class="form-control"  name="clave" ><br>
+
+                    </div>
+                    <div class="input-field">
+                        <label>Rol</label>
+                        <select name="rol" value="{{usuarios.rol}}" class="form-control">
+                            {% if request.session.logueo.2 == 'A' %}
+                            <option value="A">Administrador</option>
+                            {% endif %}
+                            <option value="E">Espectador</option>
+                            <option value="C">Creador</option>
+                        </select>
+                    </div>
+                        <button type="submit" class="btn btn-primary">Guardar usuario</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

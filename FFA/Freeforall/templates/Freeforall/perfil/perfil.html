@@ -1,0 +1,122 @@
+{% extends 'Freeforall/base.html' %}
+{% load static %}
+
+{% block contenedor %}
+{% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'E' or request.session.logueo.2 == 'C'  %}
+        <div class="row">
+            <div class="col-md-12 ">
+            <div class="titlepage">
+                <h2>Perfil</h2>
+            </div>
+            </div>
+        </div>
+        <div>
+            <main class="container">
+                <div class="bg-light p-5 rounded">
+                <h1>Nombre: {{usuarios.primer_nombre}}  {{usuarios.segundo_nombre}}  {{usuarios.primer_apellido}}  {{usuarios.segundo_apellido}}</h1>
+                <h2>Rol: {{request.session.logueo.4}}</h2>
+                <p class="lead">Fecha de nacimiento: {{usuarios.fecha_de_nacimiento}}</p>
+                <a href="{% url 'Freeforall:editarUsuario' request.session.logueo.3 %}" class="btn btn-primary">Editar</a>
+                <a class="active"><a href="{% url 'Freeforall:logout' %}" class="btn btn-danger">Salir</a>
+                </div>
+            </main>
+        </div>
+        {% if request.session.logueo.2 == 'C'  %}
+        <div class="row">
+            <div class="col-md-12 ">
+            <div class="titlepage">
+                <h2>Tus eventos creados</h2>
+            </div>
+            </div>
+        </div>
+        {% for evento in eventos %}
+        {% if usuarios == evento.id_usuario %}
+            <div id="main_slider" class="carousel slide banner-main" data-ride="carousel">
+                <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="container">
+                            <div class="row marginii">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="carousel-caption ">
+                                    <h1>{{evento.nombre_evento}} </h1>
+                                    <p>Inicio: {{evento.estado}}<br>{{evento.fecha_inicio}}<br>Fin: {{evento.feha_fin}}<br>Ubicaion: {{evento.ubicacion}}<br>Municipio: {{evento.Municipio}}<br>inscribcion: {{evento.precio}}<br>Liga: {{evento.ligas}} </p>
+
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="img-box ">
+                                    <figure><img src="{{ evento.foto }}" width="448" height="391" alt="img"/></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section><div class="py-5 text-center container">
+                    <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                        <div class="menu-area">
+                        <div class="limit-box">
+                            <nav class="main-menu">
+                                <ul class="menu-area-main">
+                                {% if request.session.logueo.2 == 'A' or request.session.logueo.2 == 'C' %}
+                                <li><a class="btn btn-lg btn-primary" href="{% url 'Freeforall:editarEvento' evento.id_evento %}" role="button">Editar</a></li>
+                                <li></li>
+                                <li><a class="btn btn-lg btn-primary" href="{% url 'Freeforall:eliminarEvento' evento.id_evento %}" role="button">Eliminar </a></li>
+                                {% else %}
+                                <li> <div class="container-fluid">
+                                                <div class="row">
+                                                    <form class="col s12" action="{% url 'Freeforall:guardarComentarios' %}" method="POST">{% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="input-group">
+                                                                <textarea class="form-control" aria-label="With textarea" type="text" name="comentarios" required></textarea>
+                                                            </div>
+                                                            <div class="input-field col s12">
+                                                                <input value="{{ request.session.logueo.3 }}" id="titulo" type="hidden" class="form-control" name="usuarios" required>
+                                                            </div>
+                                                            <div class="input-field col s12">
+                                                                <input value="{{ evento.id_evento }}" id="titulo" type="hidden" class="form-control" name="eventos" required>
+                                                            </div>
+                                                            <div class="form-btns">
+                                                                <button type="submit" class="btn btn-primary">enviar comentario</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                        </div>         
+                                    </li>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><br><br>
+        <h1>Comentarios</h1>
+                <tbody>
+                    {% for comentario in comentarios %}
+                    {% if evento == comentario.id_evento %}
+                    <main class="container">
+                    <div class="my-3 p-3 bg-body rounded shadow-sm">
+                      <h6 class="border-bottom pb-2 mb-0"></h6>
+                      <div class="d-flex text-muted pt-3">
+                        <svg class="bd-placeholder-img flex-shrink-0 me-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 32x32" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#007bff"/><text x="50%" y="50%" fill="#007bff" dy=".3em">32x32</text></svg>
+                        <p class="pb-3 mb-0 small lh-sm border-bottom">
+                          <strong class="d-block text-gray-dark">{{comentario.id_usuario}}</strong>
+                          {{comentario.comentarios}}
+                        </p>
+                      </div>
+                        <a href="{% url 'Freeforall:eliminarComentarios' comentario.id_comentarios %}">eliminar</a>
+                        <a>-</a>
+                        <a href="{% url 'Freeforall:editarComentarios' comentario.id_comentarios %}">editar</a>
+                    </main>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}   
+        {% endfor %}
+        {% endif %}               
+
+{% endif %}
+    
+{% endblock %}

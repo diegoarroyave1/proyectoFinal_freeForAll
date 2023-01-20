@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Noto Sans Balinese
+- Font Author: Copyright 2022 The Noto Project Authors (https://github.com/notofonts/balinese)
+- Font Source: http://fonts.gstatic.com/s/notosansbalinese/v18/NaPwcYvSBuhTirw6IaFn6UrRDaqje-lpbbRtYf-Fwu2Ov1DahE5Vd222PPY.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
